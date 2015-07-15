@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>MNC - Raizes</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.22" />
+	
+	<script src="../jquery/jquery.js"></script>
+	<script src="../jquery/jquery-ui.js"></script>
+	
+	<script src="../funcoes.js"></script>
+	
+	<script src="raiz_gui.js"></script>
+	
+	<script src="busca_uniforme.js"></script>
+	<script src="bisseccao.js"></script>
+	<script src="cordas.js"></script>
+	<script src="cordas_modificado.js"></script>
+	<script src="newton.js"></script>
+	<script src="newton_compacto.js"></script>
+	
+	<script>
+	$(document).ready(function(){
+		try{
+			cosntruirEntradas(BuscaUniforme_ass);
+		} catch (e){
+			$("#bash").append(e);
+			$("#bash").append("<br/><b>Devido a problemas ainda desconhecidos, o apache falha em servir a BuscaUniforme.</b><br/>");
+			$("#bash").append("Recomenda-se que utilize o arquivo offline.<br/>");
+		}
+		cosntruirEntradas(Bisseccao_ass);
+		cosntruirEntradas(Cordas_ass);
+		cosntruirEntradas(Cordas_modificado_ass);
+		cosntruirEntradas(Newton_ass);
+		cosntruirEntradas(Newton_Compacto_ass);
+	});
+	</script>
+	
+	<link rel="stylesheet" href="../jquery/jquery-ui.css"/>
+	
+	<link rel="stylesheet" href="../index.css"/>
+</head>
+
+<body>
+	MNC - Raizes
+	
+		<table>
+		<tbody>
+			<tr>
+				<td width=20% style='padding: 0.5em'>
+					<ul id='exp_lista_funcoes' class='exp_lista_funcoes'>
+						<li id='exp_placeholder_funcao'>Aguardando processamento das funções</li>
+					</ul>
+					<script>
+						funcao_handdler.listaFuncoes();
+					</script>
+				</td>
+				<td>
+
+
+	<label for='funcao_alvo'>Funcao alvo</label>
+	<input type='text' value='' id='funcao_alvo' />
+	<br />
+	<label for='derv_ponto'>Ponto alvo</label>
+	<input type='text' value='-1' id='derv_ponto' />
+	<span class='exp_explain'>Valores fora do intervalo de definição geram NaN (Not a Number).</span>
+	<br />
+	<span class='exp_explain'>Em caso de Infinity em algum valor, mude o intervalo levemente</span>
+	<br />
+	<button id='func_calc'>calcular f(x) no ponto</button>
+	<script>
+		$("#func_calc").click(
+			function(){
+				var val = $("#derv_ponto").val();
+				val = Number(val);
+				
+				funcao_handdler.funcao = $("#funcao_alvo").val();
+				val = funcao_handdler.evaluate(val);
+				if (val !== false){
+					$("#valor").text(val);
+				} else {
+					$("#valor").append( " false" );
+				}
+			}
+		);
+	</script>
+	<br />
+	
+	<div id='metodos' class='metodos'>
+		<h4 class='tytle'>Métodos aplicávies</h4>
+		
+		
+	</div>
+	
+	<div class='metodos'>
+		Resultado: <p id='valor'></p>
+		
+		<div class='exp_explain'>
+		</div>
+	</div>
+
+
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	
+	
+	<span id='bash'></span>
+	<span id='code'></span>
+	
+	<p class='exp_explain'>
+		/**<br />
+		 * @BUG<br />
+		 * Caso curioso:<br />
+		 * JavaScript é a unica linguagem em que -0.8 + 0.1 = -0.7000000000000001<br />
+		 * por isso a instrução abaixo não funciona<br />
+		 * q = p + passo;<br />
+		 */<br />
+		//~ q = p + passo;<br />
+		<br />
+		/**<br />
+		 * Caso curioso 2:<br />
+		 * Para resolver o bug acima, passei a usar uma expressão absoluta, porém<br />
+		 * -0.5 + 6 * 0.1 = -0.3999999999999999<br />
+		 * Não tenho mais idéias de como resolver<br />
+		 */<br />
+		q = inicio + k * passo;<br />
+		<br />
+		faltou implementar o que acha todas as raizes do intervalo.
+	</p>
+</body>
+
+</html>
+
+<!--
+   index.html
+   
+   Copyright 2013 Luís Puhl <luispuhl@gmail.com>
+   
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+   
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following disclaimer
+     in the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of the  nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   
+   
+-->

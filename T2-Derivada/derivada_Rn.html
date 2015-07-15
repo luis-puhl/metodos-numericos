@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>MNC</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.22" />
+	
+	<script src="../jquery/jquery.js"></script>
+	<script src="../jquery/jquery-ui.js"></script>
+	
+<!--
+	<script src="../funcoes.js"></script>
+-->
+	<script src="derivada_Rn.js"></script>
+	<script src="funcoes_Rn.js"></script>
+	
+	<link rel="stylesheet" href="../jquery/jquery-ui.css"/>
+	
+	<link rel="stylesheet" href="index.css"/>
+	
+	<script>
+	$(function() {
+		funcao_handdler.listar();
+	});
+	</script>
+	
+</head>
+
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<td width=20% style='padding: 0.5em'>
+					<ul id='exp_lista_funcoes' class='exp_lista_funcoes'>
+						<li id='exp_placeholder_funcao'>Aguardando processamento das funções</li>
+					</ul>
+				</td>
+				<td>
+
+	<label for='funcao_alvo'>Funcao a derivar</label>
+	<input type='text' value='' id='funcao_alvo' />
+	<br />
+	
+	<br />
+	Ponto a derivar
+	<span class='exp_explain'>
+		Valores fora do intervalo de definição geram NaN (Not a Number).<br />
+		Para adicioar 'dimensões' clique em '+x[n]'.<br />
+		Para remover 'dimensões', deixe os campos vazios e clique em 'limpar'.
+	</span>
+	<br />
+	<div>
+		<div id='ponto'>
+		</div>
+		<button id='x_n'>+x[n]</button>
+		<script>
+			var espaco = 0;
+			function createEspaco(valor){
+				espaco++;
+				var chil = "<input type='text' value='' id='x_" + espaco + "' size='1'/>";
+				$("#ponto").append(chil);
+			}
+			function aumentaEspaco(){
+				createEspaco("");
+			}
+			aumentaEspaco();
+			$("#x_n").click(aumentaEspaco);
+		</script>
+		
+		<button id='limpar'>limpar</button>
+		<script>
+			function limpar(){
+				//~ registra todos
+				aplicar();
+				//~ destroi os campos
+				$("#ponto").empty();
+				//~ recupera os registros
+				var registros = funcao_handdler.variaveis;
+				//~ recria os campos
+				for (var i = 0; i < registros.length ; i++){
+					createEspaco( registros[i] );
+				}
+			}
+			$("#limpar").click(limpar);
+		</script>
+		
+		<button id='aplicar'>aplicar</button>
+		<script>
+			function aplicar(){
+				//~ salva todos, para avaliar o ponto
+				var aux;
+				var campos = $("#ponto").children();
+				campos = $(campos).toArray();
+				funcao_handdler.variaveis = [];
+				
+				for (var i = 0; i < campos.length ; i++){
+					//~ var sdkjfa = $(campos[i].childNodes);
+					aux = Number( campos[i].value );
+					if (aux != NaN){
+						if ($("#vetor").text() != "f ("){
+							$("#vetor").append(",");
+						}
+						aux = funcao_handdler.adicionarVariavel( aux );
+						$("#vetor").append(" " + aux);
+					}
+				}
+				
+				var registros = funcao_handdler.variaveis;
+				var str = "f ( "; 
+				for (var i = 0; i < registros.length ; i++){
+					if (i != 0){
+						str += " ,"; 
+					}
+					str += registros[i];
+				}
+				str += " )"; 
+				$("#vetor").text(str);
+				
+			}
+			$("#aplicar").click(aplicar);
+		</script>
+		
+	</div>
+	<span id='vetor'></span>
+	<br />
+	<button id='func_calc'>calcular f(x) no ponto</button>
+	<script>
+		$("#func_calc").click(
+			function(){
+				var val;
+				
+				funcao_handdler.alvo = $("#funcao_alvo").val();
+				val = funcao_handdler.evaluate( funcao_handdler.variaveis );
+				if (val !== false){
+					$("#valor").text(val);
+				} else {
+					$("#valor").append( " false" );
+				}
+			}
+		);
+	</script>
+	<br />
+	<!--*&*&*&*&*&*&*&*&*&*& -->
+	<div class='metodos'>
+		<h4 class='tytle'>Métodos aplicávies</h4>
+		
+		<p class='exp_explain'>
+			<label for='derv_dir_precisao'>Precisão</label>
+			<input type='text' value='0.1' id='derv_dir_precisao' size='1'/>
+			<label for='derv_dir_direcao'>Derivar em relação à:</label>
+			<input type='text' value='0' id='derv_dir_direcao' size='1'/>
+			<button id='derv_calc_simples'>Aplicar derivação direta</button>
+			<br />
+			Recomendada para a maioria dos cassos.<br />
+			Risco para funções mais complexas por não cosiderar erro.
+		</p>
+		<script>
+			$("#derv_calc_simples").click(
+				function(){
+					
+					var definicao = $("#derv_dir_precisao").val();
+					definicao = Number(definicao);
+					
+					var direcao = $("#derv_dir_direcao").val();
+					direcao = Math.round( Number(direcao) );
+					//~ se quiser derivar além do espaço da função
+					if (direcao > espaco || direcao < 0){
+						$("#valor").text( "Verifique a direção" );
+						return false;
+					}
+					
+					var nomeFuncao = $("#funcao_alvo").val();
+					
+					var valor_x;
+					valor_x = api_derivada.simples(nomeFuncao, definicao, direcao );
+					
+					if (valor_x !== false){
+						$("#valor").text(valor_x);
+					} else {
+						$("#valor").append( " false" );
+					}
+				}
+			);
+		</script>
+		
+	</div>
+	<!--*&*&*&*&*&*&*&*&*&*& -->
+	<div class='metodos'>
+		Resultado: <p id='valor'></p>
+		<div class='exp_explain'>
+			<p>
+				As funções de <b>&real;<sup>n</sup></b> devem ser feitas em ECMA(javascript) no arquivo 'funcoes_Rn.js' no objeto 'FUNCOES_RN'.<br />
+				Este projeto carrega automaticamente qualquer função deste objeto.<br />
+			</p>
+		</div>
+	</div>
+	
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	</body>
+
+</html>
+
+<!--
+   index.html
+   
+   Copyright 2013 Luís Puhl <luispuhl@gmail.com>
+   
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+   
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following disclaimer
+     in the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of the  nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   
+   
+-->

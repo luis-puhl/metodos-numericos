@@ -1,0 +1,66 @@
+.exp_draggable {
+	/*
+	background-color: blue;
+	width: 100px;
+	height: 100px;
+	float: left;
+	margin: 10px 10px 10px 0;
+	*/
+	padding: 0.2em;
+	cursor: default;
+	border: 1px solid transparent;
+}
+.exp_draggable:hover{
+	border: 1px solid #999999;
+	background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+	font-weight: normal;
+	color: #212121;
+}
+.exp_draggable_hover{
+	border: 1px solid #8C8C8C;
+	background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+	font-weight: normal;
+	color: #212121;
+}
+.exp_droppable {
+	/*
+	background-color: red;
+	width: 150px;
+	height: 150px;
+	float: left;
+	*/
+	padding: 0.5em;
+	margin: 10px;
+}
+.exp_lista_funcoes{
+	padding: 0;
+	margin-left: 1.5em;
+	margin-right: 0.5em;
+}
+
+.exp_explain{
+	font-size: 12px;
+	line-height: 16px;
+}
+
+.metodos{
+	border: 1px solid #BFBFBF;
+	background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;
+	font-weight: normal;
+	color: #212121;
+}
+
+.tytle{
+	font-size: 18px;
+	line-height: 20px;
+	padding: 0em;
+	margin: 0.75em;
+	
+}
+
+#valor{
+	background: #B3B3B3;
+	font-weight: normal;
+	color: #212121;
+}
+

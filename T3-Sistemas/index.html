@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>MNC - Sistemas Lineares</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.22" />
+	
+	<script src="../jquery/jquery.js"></script>
+	<script src="../jquery/jquery-ui.js"></script>
+	
+	<script src="sistemas_gui.js"></script>
+	
+	<script src="retro_substituicao.js"></script>
+	<script src="cholesky.js"></script>
+	<script src="gauss.js"></script>
+	<script src="gauss_parcial.js"></script>
+	<script src="jacobi.js"></script>
+	
+	<script>
+	$(document).ready(function(){
+		//~ main();
+		$("#btn_add").click(aumentaMatiz);
+		//~ $("#btn_load").click(carregaMatriz);
+		adicionaPontoEstimativa(0);
+		$("#size_x,#size_y").val(1);
+		
+		carregaMetodo(retroSubstituicao_ass);
+		carregaMetodo(cholesky_ass);
+		carregaMetodo(gauss_ass);
+		carregaMetodo(gaussParcial_ass);
+		carregaMetodo(jacobi_ass);
+	});
+	</script>
+	
+	<link rel="stylesheet" href="../jquery/jquery-ui.css"/>
+	
+	<link rel="stylesheet" href="../index.css"/>
+</head>
+
+<body>
+	<div class='sistema'>
+		<input type='text' value='1' id='size_x' size='2' READONLY=1 />
+		<input type='text' value='0' id='size_y' size='2' READONLY=1 />
+		<button id='btn_add'>Adicionar variável</button>
+<!--
+		<button id='btn_load'>carregaMatriz</button>
+-->
+		
+		<table border=0>
+			<thead>
+				<tr>
+					<th class='index'>x[0]</th>
+					<th>vetor B</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class='lines last'>
+					<td class='values last'><input type='text' value='1' id='a_0_0' size='2'/></td>
+					<td class='vetor_b'><input type='text' value='1' id='b_0' size='2' /></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div id='metodos' class='metodos'>
+		<h4 class='tytle'>Métodos aplicávies</h4>
+		
+	</div>
+	
+	<div class='metodos'>
+		<div class='entrada'>
+			<b>Ponto de estimativa</b>
+			<div id='ponto'>
+			</div>
+		</div>
+		Resultado: <p id='valor'></p>
+		
+		<div class='exp_explain'>
+		</div>
+	</div>
+	
+	<span id='bash'></span>
+	<span id='code'></span>
+</body>
+
+</html>
+
+<!--
+   index.html
+   
+   Copyright 2013 Luís Puhl <luispuhl@gmail.com>
+   
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+   
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following disclaimer
+     in the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of the  nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   
+   
+-->

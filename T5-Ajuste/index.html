@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>MNC - Ajuste de Curva</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.22" />
+	
+	<script src="../jquery/jquery.js"></script>
+	<script src="../jquery/jquery-ui.js"></script>
+	
+	<script src="interpolacao_gui.js"></script>
+	
+	<script src="reta.js"></script>
+	
+	<script>
+	$(document).ready(function(){
+		$("#size").val(1);
+		$("#addPonto").click(addPonto);
+		
+		carregaMetodo(ajusteReta_ass);
+	});
+	</script>
+	
+	<link rel="stylesheet" href="../jquery/jquery-ui.css"/>
+	
+	<link rel="stylesheet" href="../index.css"/>
+	
+</head>
+
+<body>
+	<div class='sistema'>
+		<input type='text' value='0' id='size' size='2' READONLY=1 />
+		<button id='addPonto'>Adicionar Ponto</button>
+		<table border=0>
+			<thead>
+				<tr>
+					<th></th>
+					<th class='index'>x<sub class='indice'>0</sub></th>
+					<th class='index'>x<sub class='indice'>1</sub></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class='x_values'>
+					<th>x</th>
+					<td class='x_value'><input type='text' value='0' id='x_0' size='2'/></td>
+					<td class='x_value last'><input type='text' value='1' id='x_1' size='2'/></td>
+				</tr>
+				<tr class='y_values'>
+					<th>f(x)</th>
+					<td class='y_value'><input type='text' value='0' id='y_0' size='2'/></td>
+					<td class='y_value last'><input type='text' value='1' id='y_1' size='2'/></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div id='metodos' class='metodos'>
+		<h4 class='tytle'>Métodos aplicávies</h4>
+		
+	</div>
+	
+	<div class='metodos'>
+		Resultado: <p id='valor'></p>
+		
+	</div>
+	
+	<span id='bash'></span>
+	<span id='code'></span>
+</body>
+
+</html>
+
+<!--
+   index.html
+   
+   Copyright 2013 Luís Puhl <luispuhl@gmail.com>
+   
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+   
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following disclaimer
+     in the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of the  nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   
+   
+-->

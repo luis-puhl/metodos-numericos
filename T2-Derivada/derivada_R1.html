@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>MNC</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 1.22" />
+	
+	<script src="../jquery/jquery.js"></script>
+	<script src="../jquery/jquery-ui.js"></script>
+	
+	<script src="../funcoes.js"></script>
+	<script src="derivada.js"></script>
+	
+	<link rel="stylesheet" href="../jquery/jquery-ui.css"/>
+	
+	<link rel="stylesheet" href="index.css"/>
+</head>
+
+<body>
+	<table>
+		<tbody>
+			<tr>
+				<td width=20% style='padding: 0.5em'>
+					<ul id='exp_lista_funcoes' class='exp_lista_funcoes'>
+						<li id='exp_placeholder_funcao'>Aguardando processamento das funções</li>
+					</ul>
+					<script>
+						funcao_handdler.listaFuncoes();
+					</script>
+				</td>
+				<td>
+
+
+	<label for='funcao_alvo'>Funcao a derivar</label>
+	<input type='text' value='' id='funcao_alvo' />
+	<br />
+	<label for='derv_ponto'>Ponto a derivar</label>
+	<input type='text' value='-1' id='derv_ponto' />
+	<span class='exp_explain'>Valores fora do intervalo de definição geram NaN (Not a Number).</span>
+	<br />
+	<button id='func_calc'>calcular f(x) no ponto</button>
+	<script>
+		$("#func_calc").click(
+			function(){
+				var val = $("#derv_ponto").val();
+				val = Number(val);
+				
+				funcao_handdler.funcao = $("#funcao_alvo").val();
+				val = funcao_handdler.evaluate(val);
+				if (val !== false){
+					$("#valor").text(val);
+				} else {
+					$("#valor").append( " false" );
+				}
+			}
+		);
+	</script>
+	<br />
+	
+	<label for='derv_ponto'>Passo de aproximação</label>
+	<input type='text' value='' id='derv_h' />
+	<label for='derv_ponto'>Erro de aproximação esperado</label>
+	<input type='text' value=0.01 id='derv_e' />
+	<br />
+	
+	<div class='metodos'>
+		<h4 class='tytle'>Métodos aplicávies</h4>
+		
+		<p class='exp_explain'>
+			<button id='derv_calc_simples'>Aplicar derivação direta</button>
+			<br />
+			Recomendada para a maioria dos cassos.<br />
+			Risco para funções mais complexas por não cosiderar erro.
+		</p>
+		<script>
+			$("#derv_calc_simples").click(
+				function(){
+					var ponto_x = $("#derv_ponto").val();
+					ponto_x = Number(ponto_x);
+					
+					var definicao = $("#derv_e").val();
+					definicao = Number(definicao);
+					
+					var valor_x;
+					valor_x = api_derivada.simples(ponto_x, definicao);
+					
+					if (valor_x !== false){
+						$("#valor").text(valor_x);
+					} else {
+						$("#valor").append( " false" );
+					}
+				}
+			);
+		</script>
+		
+		<p class='exp_explain'>
+			<button id='derv_calc'>Aplicar derivação iterativa com erro.</button>
+			<br />
+			Para casos mais complexos, use este método.
+		</p>
+		<script>
+			$("#derv_calc").click(
+				function(){
+					var ponto_x = $("#derv_ponto").val();
+					ponto_x = Number(ponto_x);
+					
+					var passo = $("#derv_h").val();
+					passo = Number(passo);
+					
+					var definicao = $("#derv_e").val();
+					definicao = Number(definicao);
+					
+					var valor_x;
+					valor_x = api_derivada.iterativa(ponto_x, definicao, passo);
+					
+					if (valor_x !== false){
+						$("#valor").text(valor_x);
+					} else {
+						$("#valor").append( " false" );
+					}
+				}
+			);
+		</script>
+		
+		<p class='exp_explain'>
+			<button id='derv_2_calc'>Aplicar derivação direta a segunda.</button>
+			<br />
+			Derivada segunda, usando o mesmo principio da derivação direta.
+		</p>
+		<script>
+			$("#derv_2_calc").click(
+				function(){
+					var ponto_x = $("#derv_ponto").val();
+					ponto_x = Number(ponto_x);
+					
+					var definicao = $("#derv_e").val();
+					definicao = Number(definicao);
+					
+					var valor_x;
+					valor_x = api_derivada.segunda(ponto_x, definicao);
+					
+					if (valor_x !== false){
+						$("#valor").text(valor_x);
+					} else {
+						$("#valor").append( " false" );
+					}
+				}
+			);
+		</script>
+		
+		<p class='exp_explain'>
+			<button id='derv_gen_calc'>Aplicar derivação de ordem genérica (recusiva).</button>
+			<label for='derv_ordem'>Ordem da derivada:</label>
+			<input type='text' value='3' id='derv_ordem' />
+			<br />
+			Derivada de ordem genérica, use com muito cuidado.<br />
+			Evitar executar em IE, pois ou não funciona, ou mata a máquina<sup class="Template-Fact" style="white-space:nowrap;">[<i><a title="Wikipedia:Citation needed" href="/wiki/Wikipedia:Citation_needed#Citation_needed"><span title="Wikipedia:Citation needed#Citation needed">citation needed</span></a></i>]</sup>.<br />
+			É altamente sucetível ao dilema do passo H.<br />
+			No caso de f<sup> vii</sup>(x) sendo f(x)=sen(x), precisão de 0.1 moustrou-se melhor.
+		</p>
+		<script>
+			$("#derv_gen_calc").click(
+				function(){
+					var ponto_x = $("#derv_ponto").val();
+					ponto_x = Number(ponto_x);
+					
+					var ordem = $("#derv_ordem").val();
+					ordem = Number(ordem);
+					
+					var definicao = $("#derv_e").val();
+					definicao = Number(definicao);
+					
+					$("#valor").append( "<br \>start:" + Date.now() + "<br \>");
+					var valor_x;
+					valor_x = api_derivada.recursiva(ponto_x, ordem,definicao);
+					
+					if (valor_x !== false){
+						$("#valor").append(valor_x + "<br \>");
+					} else {
+						$("#valor").append( " false" );
+					}
+					$("#valor").append( "finish:" + Date.now() + "<br \>");
+				}
+			);
+		</script>
+		
+	</div>
+	
+	<div class='metodos'>
+		Resultado: <p id='valor'></p>
+		
+		<div class='exp_explain'>
+			<p>
+				Derivada de ordem N é feita atravez de recusão, usar com cuidado.<br />
+				(Apesar do aparente alto custo, é uma solução óbvia).<br />
+				As funções devem ser feitas em ECMA(javascript) no arquivo 'funcoes.js' no objeto 'FUNCOES'.<br />
+				Este projeto carrega automaticamente qualquer função deste objeto.<br />
+				Funções vetoriais estão disponíveis somente na seção de derivadas Multivariavel.
+			</p>
+		</div>
+	</div>
+
+
+
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	</body>
+
+</html>
+
+<!--
+   index.html
+   
+   Copyright 2013 Luís Puhl <luispuhl@gmail.com>
+   
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are
+   met:
+   
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following disclaimer
+     in the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of the  nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission.
+   
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+   
+   
+-->
